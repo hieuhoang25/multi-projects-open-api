@@ -1,0 +1,56 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '2.7.3'
+	id 'io.spring.dependency-management' version '1.0.13.RELEASE'
+	id 'org.openapi.generator' version "6.1.0"
+}
+
+group = 'com.hicode'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '17'
+
+repositories {
+	mavenCentral()
+}
+bootJar{
+	enabled = false
+	exclude("**/test/**")
+}
+jar{
+	enabled=true
+}
+repositories{
+	mavenCentral()
+}
+
+
+compileJava(){
+	dependsOn("buildOpenApi")
+}
+
+task buildOpenApi(type: org.openapitools.generator.gradle.plugin.tasks.GenerateTask){
+	generatorName = "spring"
+	inputSpec = "$projectDir/src/main/resources/open-api.yml".toString()
+	outputDir = "$buildDir/openapi/server".toString()
+	apiPackage = "com.hicode.openapi.controller"
+	modelPackage = "com.hicode.openapi.model"
+	configOptions = [
+			"dateLibrary": "java17",
+			"interfaceOnly":"true"
+	]
+}
+
+sourceSets{
+	main{
+		java{
+			srcDirs += ["$buildDir/openapi/server/src/main/java"]
+		}
+	}
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.openapitools:jackson-databind-nullable:0.2.0'
+	implementation 'io.swagger.core.v3:swagger-annotations:2.2.2'
+	implementation 'org.springframework.boot:spring-boot-starter-validation:3.0.0'
+}
