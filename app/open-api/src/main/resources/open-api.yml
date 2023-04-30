@@ -532,10 +532,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
+                type: object
             application/xml:
               schema:
-                $ref: '#/components/schemas/User'
+                type: object
         '400':
           description: Invalid username supplied
         '404':

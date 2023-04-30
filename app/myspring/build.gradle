@@ -16,9 +16,17 @@ configurations {
 
 repositories {
 	mavenCentral()
+	maven {
+		url = "https://maven.pkg.github.com/hieuhoang25/hicode-library"
+		credentials {
+			username = project.findProperty("gpr.user") ?: System.getenv("USERNAME")
+			password = project.findProperty("gpr.key") ?: System.getenv("TOKEN")
+		}
+	}
 }
 
 dependencies {
+	implementation 'com.hicode:library:0.0.1-SNAPSHOT'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'

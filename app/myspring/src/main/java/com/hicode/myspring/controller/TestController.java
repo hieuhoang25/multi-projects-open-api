@@ -1,5 +1,6 @@
 package com.hicode.myspring.controller;
 
+import com.hicode.library.model.APIResponse;
 import com.hicode.openapi.controller.PetApi;
 import com.hicode.openapi.controller.UserApi;
 import com.hicode.openapi.model.User;
@@ -17,9 +18,13 @@ public class TestController implements UserApi {
      * or User not found (status code 404)
      */
     @Override
-    public ResponseEntity<User> getUserByName(String username) {
+    public ResponseEntity<Object> getUserByName(String username) {
         User user = new User();
         user.setUsername(username);
-        return ResponseEntity.ok(user);
+        APIResponse<User> apiResponse = new APIResponse<>();
+        apiResponse.setData(user);
+        apiResponse.setMessage("Fetch a user by username successfully!");
+        apiResponse.setStatus("200");
+        return ResponseEntity.ok(apiResponse);
     }
 }
